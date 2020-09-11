@@ -1,0 +1,14 @@
+{
+  "version": 3,
+  "file": "bundle.css",
+  "sources": [
+    "../../App.svelte",
+    "../../Home.svelte"
+  ],
+  "sourcesContent": [
+    "<script lang=\"ts\">import Home from \"./home/Home.svelte\";\n</script>\n\n<style>\n  main {\n    width: 100%;\n    height: 100%;\n    position: relative;\n  }\n</style>\n\n<main>\n  <Home />\n</main>\n",
+    "<script>\n  import { onMount } from \"svelte\";\n\n  let canvas;\n\n  onMount(() => {\n    const ctx = canvas.getContext(\"2d\");\n    let frame;\n\n    (function loop() {\n      frame = requestAnimationFrame(loop);\n\n      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);\n\n      for (let p = 0; p < imageData.data.length; p += 4) {\n        const i = p / 4;\n        const x = i % canvas.width;\n        const y = (i / canvas.height) >>> 0;\n\n        const t = window.performance.now();\n\n        const r = 64 + (128 * x) / canvas.width + 64 * Math.sin(t / 1000);\n        const g = 64 + (128 * y) / canvas.height + 64 * Math.cos(t / 1000);\n        const b = 128;\n\n        imageData.data[p + 0] = r;\n        imageData.data[p + 1] = g;\n        imageData.data[p + 2] = b;\n        imageData.data[p + 3] = 255;\n      }\n\n      ctx.putImageData(imageData, 0, 0);\n    })();\n\n    return () => {\n      cancelAnimationFrame(frame);\n    };\n  });\n</script>\n\n<style>\n  canvas {\n    width: 100%;\n    height: 100%;\n    background-color: #666;\n  }\n</style>\n\n<canvas bind:this={canvas} width={32} height={32} />\n"
+  ],
+  "names": [],
+  "mappings": "AAIE,IAAI,eAAC,CAAC,AACJ,KAAK,CAAE,IAAI,CACX,MAAM,CAAE,IAAI,CACZ,QAAQ,CAAE,QAAQ,AACpB,CAAC;ACiCD,MAAM,eAAC,CAAC,AACN,KAAK,CAAE,IAAI,CACX,MAAM,CAAE,IAAI,CACZ,gBAAgB,CAAE,IAAI,AACxB,CAAC"
+}
